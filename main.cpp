@@ -410,6 +410,7 @@ int main() {
                                      pontszam +=1;
                                      if(pontszam >= 5){
                                          cout << "Nyert a 2. játékos! Szép munka :) \n";
+                                         cout << "A játék véget ér.";
                                          playersorszam = 0;
                                          jatekvege = 1;
                                      }
