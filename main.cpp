@@ -58,6 +58,9 @@ int main() {
         int bekertsor1n = NULL;
         int bekertoszlop2n = NULL;
         int bekertsor2n = NULL;
+        long pos1=0;
+        long pos2=0;
+        bool pos2ures = true;
         
         
         //Bekérés a 1. játékosoktól
@@ -73,6 +76,31 @@ int main() {
                  //Hogy ne 0-tól induljon a kimutatás
                  bekertsor1-=1;
                  bekertoszlop1-=1;
+                 
+                 //Ha esetleg nagyobb lenne a szám
+                 int maxindex = 0;
+                 
+                 //Csak akkor resizeolódik a tábla, ha pozitív értékbe adunk meg 5-nél vagy az indexnél nagyobb értéket.
+                 if(bekertsor1n >= 0 && bekertoszlop1n >= 0){
+                     if(bekertsor1 >= bekertoszlop1){
+                         maxindex = bekertsor1;
+                     }
+                     if(bekertoszlop1 >= bekertsor1){
+                         maxindex = bekertoszlop1;
+                     }
+                 }
+                 
+                 //Ha a bekért szám nagyobb az indexnél, akkor növelni fogja a vektor méretét
+                 if(maxindex >= index){
+                     
+                     tabla.resize(maxindex+1);
+                     for (int i = 0; i < maxindex+1; ++i)
+                         tabla[i].resize(maxindex+1);
+                     index = maxindex;
+                 }
+
+                 
+                 
                  
                  //Mínusz abszolútértékre váltás
                  if(bekertsor1 < 0){
@@ -91,6 +119,7 @@ int main() {
                      }
                      
                      if(bekertsor1 > 1){
+                         bekertsor1 -= 1;
                          for(int i=0; i<bekertsor1; i++){
                              tabla.emplace(tabla.begin(), 0);
                          }
@@ -131,28 +160,6 @@ int main() {
                  //cout << "ABSoszlop: " << bekertoszlop1 << "\n";
                  
                 
-                 //Ha esetleg nagyobb lenne a szám
-                 int maxindex = 0;
-                 
-                 //Csak akkor resizeolódik a tábla, ha pozitív értékbe adunk meg 5-nél vagy az indexnél nagyobb értéket.
-                 if(bekertsor1n > 0 && bekertoszlop1n > 0){
-                     if(bekertsor1 >= bekertoszlop1){
-                         maxindex = bekertsor1;
-                     }
-                     if(bekertoszlop1 >= bekertsor1){
-                         maxindex = bekertoszlop1;
-                     }
-                 }
-                 
-                 //Ha a bekért szám nagyobb az indexnél, akkor növelni fogja a vektor méretét
-                 if(maxindex >= index){
-                     
-                         tabla.resize(maxindex+1);
-                         for (int i = 0; i < maxindex+1; ++i)
-                             tabla[i].resize(maxindex+1);
-                     index = maxindex;
-                 }
-                 
                  //Ha a bekértoszlop negatív, akkor igazából a bekértoszlop 0 lesz
                  if(bekertoszlop1n < 0){
                      bekertoszlop1 = 0;
@@ -277,6 +284,27 @@ int main() {
                  bekertoszlop2-=1;
 
                  
+                 int maxindex = 0;
+                 if(bekertsor2n >= 0 && bekertoszlop2n >= 0){
+                     if(bekertsor2 >= bekertoszlop2){
+                         maxindex = bekertsor2;
+                     }
+                     if(bekertoszlop2 >= bekertsor2){
+                         maxindex = bekertoszlop2;
+                     }
+                 }
+                 
+                 if(maxindex >= index){
+                     
+                     tabla.resize(maxindex+1);
+                     for (int i = 0; i < maxindex+1; ++i)
+                         tabla[i].resize(maxindex+1);
+                     index = maxindex;
+                 }
+
+                 
+                 
+                 
                  //Mínusz abszolútértékre váltás
                  if(bekertsor2 < 0){
                      //Elmentjük a negatív értéket egy változóba, később jó lesz:)
@@ -294,6 +322,7 @@ int main() {
                      }
                      
                      if(bekertsor2 > 1){
+                         bekertsor2 -=1;
                          for(int i=0; i<bekertsor2; i++){
                              tabla.emplace(tabla.begin(), 0);
                          }
@@ -328,25 +357,7 @@ int main() {
                      
                      
                  }
-                 
-                 int maxindex = 0;
-                 if(bekertsor2n > 0 && bekertoszlop2n > 0){
-                     if(bekertsor2 >= bekertoszlop2){
-                         maxindex = bekertsor2;
-                     }
-                     if(bekertoszlop2 >= bekertsor2){
-                         maxindex = bekertoszlop2;
-                     }
-                 }
-                 
-                 if(maxindex >= index){
-                     
-                     tabla.resize(maxindex+1);
-                     for (int i = 0; i < maxindex+1; ++i)
-                         tabla[i].resize(maxindex+1);
-                     index = maxindex;
-                 }
-
+                
                  if(bekertoszlop2n < 0){
                      bekertoszlop2 = 0;
                  }
@@ -384,57 +395,118 @@ int main() {
                              cout << "\n";
                          }
                          
-                         //Elbírálás
-                         double pontszam = 0;
-                         for(int x=0; x<=tabla.size()-1; x++){
-                             for(int y=0; y<=tabla.size()-1; y++){
-                                 //Ha vízszintesen összejön az 5 db, akkor a pontszám +=1
-                                 //Majd a playersorszám nullázódik, és a játékvége = 1, tehát vége a játékciklusnak
-                                 if(tabla[y][x] == 2){
-                                     pontszam +=1;
-                                     if(pontszam >= 5){
-                                         cout << "Nyert a 2. játékos! Szép munka :) \n";
-                                         playersorszam = 0;
-                                         jatekvege = 1;
-                                     }
-                                 }else{
-                                     pontszam = 0;
-                                 }
-                             }
-                         }
-                         
-                         for(int x=0; x<=tabla.size()-1; x++){
-                             for(int y=0; y<=tabla.size()-1; y++){
-                                 //Ha függőlegesen összejön az 5 db, akkor a pontszám +=1
-                                 if(tabla[x][y] == 2){
-                                     pontszam +=1;
-                                     if(pontszam >= 5){
-                                         cout << "Nyert a 2. játékos! Szép munka :) \n";
-                                         cout << "A játék véget ér.";
-                                         playersorszam = 0;
-                                         jatekvege = 1;
-                                     }
-                                 }else{
-                                     pontszam = 0;
-                                 }
-                             }
-                         }
-                         
-                         //Játékosváltás, ha nincs még vége a játéknak
-                         if(jatekvege == 1){
-                             playersorszam = 0;
-                         }else{
-                             playersorszam = 1;
-                         }
                      }
             }while (tabla[bekertsor2][bekertoszlop2] == 0
                     && tabla[bekertsor2][0] == 0
                     && tabla[0][bekertoszlop2] == 0);
             
+            
+            //Elbírálás
+            double pontszam = 0;
+            for(int x=0; x<=tabla.size()-1; x++){
+                for(int y=0; y<=tabla.size()-1; y++){
+                    //Ha vízszintesen összejön az 5 db, akkor a pontszám +=1
+                    //Majd a playersorszám nullázódik, és a játékvége = 1, tehát vége a játékciklusnak
+                    if(tabla[y][x] == 2){
+                        pontszam +=1;
+                        if(pontszam >= 5){
+                            cout << "Nyert a 2. játékos! Szép munka :) \n";
+                            playersorszam = 0;
+                            jatekvege = 1;
+                        }
+                    }else{
+                        pontszam = 0;
+                    }
+                }
+            }
+            
+            for(int x=0; x<=tabla.size()-1; x++){
+                for(int y=0; y<=tabla.size()-1; y++){
+                    //Ha függőlegesen összejön az 5 db, akkor a pontszám +=1
+                    if(tabla[x][y] == 2){
+                        pontszam +=1;
+                        if(pontszam >= 5){
+                            cout << "Nyert a 2. játékos! Szép munka :) \n";
+                            playersorszam = 0;
+                            jatekvege = 1;
+                        }
+                    }else{
+                        pontszam = 0;
+                    }
+                }
+            }
+            
+            //Indexkeresés a vektorban, majd balról-jobbra keresés (fentről le - lentről fel)
+            for(int a = 0; a<tabla.size(); a++){
+                for(int i =0; i<tabla[0].size(); i++) {
+                    if(tabla[a][i] == 2){
+                        if(pos2ures == false){
+                            pontszam = 0;
+                        }
+                        pos2 = i;
+                        pos2ures = false;
+                        
+                        
+                        for(int j=0; j<=tabla[0].size(); j++){
+                            if((j+pos2) < tabla[0].size()-1){
+                                if(tabla[(j+pos2)][(j+pos2)] == 2) {
+                                    pontszam +=1;
+                                    if(pontszam == 5){
+                                        cout << "Nyert a 2. játékos! Szép munka :) \n";
+                                        playersorszam = 0;
+                                        jatekvege = 1;
+                                        tabla[3333][1] = 1;
+                                    }
+                                }else{
+                                    pontszam = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for(int a = 0; a<tabla.size(); a++){
+                for(int i =0; i<tabla[0].size(); i++) {
+                    if(tabla[a][i] == 2){
+                        if(pos2ures == false){
+                            pontszam = 0;
+                        }
+                        pos2 = i;
+                        pos2ures = false;
+
+                        for(int j=0; j<=tabla[0].size(); j++){
+                            if((pos2-j) < tabla[0].size()){
+                                if(tabla[j][(pos2-j)] == 2) {
+                                    pontszam +=1;
+                                    if(pontszam == 5){
+                                        cout << "Nyert a 2. játékos! Szép munka :) \n";
+                                        playersorszam = 0;
+                                        jatekvege = 1;
+                                        tabla[3333][1] = 1;
+                                    }
+                                }else{
+                                    pontszam = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            //Játékosváltás, ha nincs még vége a játéknak
+            if(jatekvege == 1){
+                playersorszam = 0;
+            }else{
+                playersorszam = 1;
+            }
+
         }
         
         
     }while(jatekvege != 1);
+    
     
     
 }
