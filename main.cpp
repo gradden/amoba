@@ -171,19 +171,8 @@ int main() {
                  }
                  
                  if(tabla[bekertsor1][bekertoszlop1] != 0){
-                     cout << "Bekért: " << bekertsor1 << "," << bekertoszlop1 << "\n";
                      cout << "Ezen a pozicion szerepel mar egy jel. Valassz masikat! \n";
                      
-                     //Pálya mutatása, és behelyettesítése karakterrel:
-                     for(int x=0; x<=tabla.size()-1; x++){
-                         cout << x+1 << ".\t";
-                         for(int y=0; y<=tabla[x].size()-1; y++){
-                             if(tabla[x][y] == 0){cout << "-";}
-                             if(tabla[x][y] == 1){cout << "EZ";}
-                             if(tabla[x][y] == 2){cout << "O";}
-                         }
-                         cout << "\n";
-                     }
                  }
                  
                  
@@ -211,8 +200,8 @@ int main() {
                              }
                              cout << "\n";
                          }
-                     
-                     }
+                     playersorszam = 2;
+                }
              }while (tabla[bekertsor1][bekertoszlop1] == 0
                      && tabla[bekertsor1][0] == 0
                      && tabla[0][bekertoszlop1] == 0);
@@ -313,8 +302,6 @@ int main() {
             //Játékosváltás, ha nincs még vége a játéknak
             if(jatekvege == 1){
                 playersorszam = 0;
-            }else{
-                playersorszam = 2;
             }
         }
         
@@ -425,7 +412,6 @@ int main() {
                  }
                  
                      if(tabla[bekertsor2][bekertoszlop2] != 0){
-                         cout << "Bekért: " << bekertsor1 << "," << bekertoszlop1 << "\n";
                          cout << "Ezen a pozicion szerepel mar egy jel. Valassz masikat! \n";
                      }
                      if(tabla[bekertsor2][bekertoszlop2] == 0){
@@ -453,8 +439,8 @@ int main() {
                              }
                              cout << "\n";
                          }
-                         
-                     }
+                    playersorszam = 1;
+                }
             }while (tabla[bekertsor2][bekertoszlop2] == 0
                     && tabla[bekertsor2][0] == 0
                     && tabla[0][bekertoszlop2] == 0);
@@ -557,8 +543,6 @@ int main() {
             //Játékosváltás, ha nincs még vége a játéknak
             if(jatekvege == 1){
                 playersorszam = 0;
-            }else{
-                playersorszam = 1;
             }
 
         }
