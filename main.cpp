@@ -401,11 +401,22 @@ int main() {
                  }
                  
                  if(maxindex >= index){
+                     int jelenlegis = (int)tabla[0].size();
+                     int jelenlegio = (int)tabla.size();
                      
-                     tabla.resize(maxindex+1);
-                     for (int i = 0; i < maxindex+1; ++i)
-                         tabla[i].resize(maxindex+1);
-                     index = maxindex;
+                     
+                     tabla.resize(jelenlegio+((maxindex+1)-index));
+                     for (int i = 0; i < jelenlegio+((maxindex+1)-index); ++i)
+                         tabla[i].resize(jelenlegis+((maxindex+1)-index));
+                     
+                     if(tabla.size() != tabla[0].size()){
+                         tabla.resize(tabla[0].size());
+                         for (int i = 0; i < tabla.size(); i++){
+                             tabla[i].resize(tabla.size());
+                         }
+                     }
+                     
+                     index = jelenlegio+((maxindex+1)-index);
                  }
                  
                  
