@@ -9,7 +9,6 @@
 //  --Neptun kód: IRIE5X
 //  --Email cím: tgery3@gmail.com
 //
-//Kérdések: negatív, vagy pedig végtelen pálya pozitívban?
 
 #include <iostream>
 #include <string>
@@ -23,6 +22,8 @@ using namespace std;
 
 int main() {
     int index = 5;
+    int pluszindexoszl = 5;
+    int pluszindexsor = 5;
     int playersorszam = 1;
     float jatekvege = 0;
     
@@ -79,31 +80,6 @@ int main() {
                  bekertsor1-=1;
                  bekertoszlop1-=1;
                  
-                 //Ha esetleg nagyobb lenne a szám
-                 int maxindex = 0;
-                 
-                 //Csak akkor resizeolódik a tábla, ha pozitív értékbe adunk meg 5-nél vagy az indexnél nagyobb értéket.
-                 if(bekertsor1n >= 0 && bekertoszlop1n >= 0){
-                     if(bekertsor1 >= bekertoszlop1){
-                         maxindex = bekertsor1;
-                     }
-                     if(bekertoszlop1 >= bekertsor1){
-                         maxindex = bekertoszlop1;
-                     }
-                 }
-                 
-                 //Ha a bekért szám nagyobb az indexnél, akkor növelni fogja a vektor méretét
-                 if(maxindex >= index){
-                     
-                     tabla.resize(maxindex+1);
-                     for (int i = 0; i < maxindex+1; ++i)
-                         tabla[i].resize(maxindex+1);
-                     index = maxindex;
-                 }
-
-                 
-                 
-                 
                  //Mínusz abszolútértékre váltás
                  if(bekertsor1 < 0){
                      //Elmentjük a negatív értéket egy változóba, később jó lesz:)
@@ -133,7 +109,6 @@ int main() {
                          
                      }
                      
-                     
                  }
                  
                  if(bekertoszlop1 < 0){
@@ -154,9 +129,29 @@ int main() {
                          }
                      }
                      
-                                          
                  }
                  
+                 //Ha esetleg nagyobb lenne a szám
+                 int maxindex = 0;
+                 
+                 //Csak akkor resizeolódik a tábla, ha pozitív értékbe adunk meg 5-nél vagy az indexnél nagyobb értéket.
+                 if(bekertsor1n >= 0 || bekertoszlop1n >= 0){
+                     if(bekertsor1 >= bekertoszlop1){
+                         maxindex = bekertsor1;
+                     }
+                     if(bekertoszlop1 >= bekertsor1){
+                         maxindex = bekertoszlop1;
+                     }
+                 }
+                 
+                 //Ha a bekért szám nagyobb az indexnél, akkor növelni fogja a vektor méretét
+                 if(maxindex >= index){
+                     
+                     tabla.resize(maxindex+1);
+                     for (int i = 0; i < maxindex+1; ++i)
+                         tabla[i].resize(maxindex+1);
+                     index = maxindex;
+                 }
                  
                  //cout << "ABSsor: " << bekertsor1 << "\n";
                  //cout << "ABSoszlop: " << bekertoszlop1 << "\n";
@@ -253,8 +248,8 @@ int main() {
                         pos1ures = false;
                         
                         
-                        for(int j=0; j<=tabla[0].size(); j++){
-                            if((j+pos1) < tabla[0].size()-1){
+                        for(int j=0; j<=tabla[0].size()-1; j++){
+                            if((j+pos1) < tabla[0].size()-1 && (j+pos1) < tabla.size()-1){
                                 if(tabla[(j+pos1)][(j+pos1)] == 1) {
                                     pontszam +=1;
                                     if(pontszam == 5){
@@ -280,7 +275,7 @@ int main() {
                         pos1 = i;
                         pos1ures = false;
                         
-                        for(int j=0; j<=tabla[0].size(); j++){
+                        for(int j=0; j<=tabla.size()-1; j++){
                             if((pos1-j) < tabla[0].size()){
                                 if(tabla[j][(pos1-j)] == 1) {
                                     pontszam +=1;
@@ -328,28 +323,6 @@ int main() {
                 cin >> bekertsor2;
                  bekertsor2-=1;
                  bekertoszlop2-=1;
-
-                 
-                 int maxindex = 0;
-                 if(bekertsor2n >= 0 && bekertoszlop2n >= 0){
-                     if(bekertsor2 >= bekertoszlop2){
-                         maxindex = bekertsor2;
-                     }
-                     if(bekertoszlop2 >= bekertsor2){
-                         maxindex = bekertoszlop2;
-                     }
-                 }
-                 
-                 if(maxindex >= index){
-                     
-                     tabla.resize(maxindex+1);
-                     for (int i = 0; i < maxindex+1; ++i)
-                         tabla[i].resize(maxindex+1);
-                     index = maxindex;
-                 }
-
-                 
-                 
                  
                  //Mínusz abszolútértékre váltás
                  if(bekertsor2 < 0){
@@ -380,6 +353,7 @@ int main() {
                          
                      }
                      
+                     pluszindexsor = (int)tabla[0].size();
                      
                  }
                  
@@ -401,9 +375,29 @@ int main() {
                          }
                      }
                      
-                     
+                     pluszindexoszl = (int)tabla.size();
                  }
-                
+                 
+                 
+                 int maxindex = 0;
+                 if(bekertsor2n >= 0 && bekertoszlop2n >= 0){
+                     if(bekertsor2 >= bekertoszlop2){
+                         maxindex = bekertsor2;
+                     }
+                     if(bekertoszlop2 >= bekertsor2){
+                         maxindex = bekertoszlop2;
+                     }
+                 }
+                 
+                 if(maxindex >= index){
+                     
+                     tabla.resize(maxindex+1);
+                     for (int i = 0; i < maxindex+1; ++i)
+                         tabla[i].resize(maxindex+1);
+                     index = maxindex;
+                 }
+                 
+                 
                  if(bekertoszlop2n < 0){
                      bekertoszlop2 = 0;
                  }
@@ -492,15 +486,14 @@ int main() {
                         pos2ures = false;
                         
                         
-                        for(int j=0; j<=tabla[0].size(); j++){
-                            if((j+pos2) < tabla[0].size()-1){
+                        for(int j=0; j<=tabla[0].size()-1; j++){
+                            if((j+pos2) < tabla[0].size()-1 && (j+pos2) < tabla.size()-1){
                                 if(tabla[(j+pos2)][(j+pos2)] == 2) {
                                     pontszam +=1;
                                     if(pontszam == 5){
                                         cout << "Nyert a 2. játékos! Szép munka :) \n";
                                         playersorszam = 0;
                                         jatekvege = 1;
-                                        tabla[3333][1] = 1;
                                     }
                                 }else{
                                     pontszam = 0;
@@ -519,7 +512,7 @@ int main() {
                         pos2 = i;
                         pos2ures = false;
 
-                        for(int j=0; j<=tabla[0].size(); j++){
+                        for(int j=0; j<=tabla.size()-1; j++){
                             if((pos2-j) < tabla[0].size()){
                                 if(tabla[j][(pos2-j)] == 2) {
                                     pontszam +=1;
@@ -527,7 +520,6 @@ int main() {
                                         cout << "Nyert a 2. játékos! Szép munka :) \n";
                                         playersorszam = 0;
                                         jatekvege = 1;
-                                        tabla[3333][1] = 1;
                                     }
                                 }else{
                                     pontszam = 0;
