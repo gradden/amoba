@@ -49,6 +49,18 @@ int main() {
     }
     
     
+    //Pálya mutatása, és behelyettesítése karakterrel:
+    for(int x=0; x<=tabla.size()-1; x++){
+        cout << x+1 << ".\t";
+        for(int y=0; y<=tabla[x].size()-1; y++){
+            if(tabla[x][y] == 0){cout << "-";}
+            if(tabla[x][y] == 1){cout << "X";}
+            if(tabla[x][y] == 2){cout << "O";}
+        }
+        cout << "\n";
+    }
+
+    
     do{
         //A bekért változókra NULL azaz semmivel töltjük fel, mivel a 0 egy érték már!
         int bekertsor1 = NULL;
@@ -80,11 +92,22 @@ int main() {
                  bekertsor1-=1;
                  bekertoszlop1-=1;
                  
-                 //Mínusz abszolútértékre váltás
-                 if(bekertsor1 < 0){
-                     //Elmentjük a negatív értéket egy változóba, később jó lesz:)
-                     bekertsor1n = (bekertsor1)+1;
+                 if(bekertsor1<0){
+                    bekertsor1n = (bekertsor1)+1;
                      bekertsor1 = abs(bekertsor1)-1;
+                 }
+                 if(bekertoszlop1<0){
+                     bekertoszlop1n = (bekertoszlop1)+1;
+                     bekertoszlop1 = abs(bekertoszlop1)-1;
+                 }
+                 
+                 
+                //Mínusz abszolútértékre váltás
+                 if(bekertsor1n < 0){
+                     
+                     if(bekertoszlop1n < 0){
+                         bekertsor1n -= 1;
+                     }
                      
                      //Ha csak -1 a bekért érték, akkor elég csak egyszer insertelni.
                      //Hozzáadunk annyi nullát a függőleges sorba, amennyi minusz értéket kapott.
@@ -97,23 +120,24 @@ int main() {
                      }
                      
                      if(bekertsor1 > 1){
-                         bekertsor1 -= 1;
+                         int jelenlegis = (int)tabla[0].size();
+                         
                          for(int i=0; i<bekertsor1; i++){
                              tabla.emplace(tabla.begin(), 0);
                          }
                          for(int a=0; a<bekertsor1; a++){
-                             for(int j = 0; j<tabla[j+bekertsor1].size(); j++){
+                             for(int j = 0; j<tabla[jelenlegis].size(); j++){
                                  tabla[a].push_back(0);
                              }
                          }
                          
                      }
                      
+                     
                  }
                  
-                 if(bekertoszlop1 < 0){
-                     bekertoszlop1n = (bekertoszlop1)+1;
-                     bekertoszlop1 = abs(bekertoszlop1)-1;
+                 if(bekertoszlop1n < 0){
+                     
                      
                      //Minden függőleges sor elé rakunk táblaméretnyi nullást
                      //Így produkálva egy új függőleges sort.
@@ -129,43 +153,41 @@ int main() {
                          }
                      }
                      
+                     
                  }
-                 
                  //Ha esetleg nagyobb lenne a szám
                  int maxindex = 0;
                  
                  //Csak akkor resizeolódik a tábla, ha pozitív értékbe adunk meg 5-nél vagy az indexnél nagyobb értéket.
-                 if(bekertsor1n >= 0 || bekertoszlop1n >= 0){
-                     if(bekertsor1 >= bekertoszlop1){
-                         maxindex = bekertsor1;
-                     }
-                     if(bekertoszlop1 >= bekertsor1){
-                         maxindex = bekertoszlop1;
-                     }
-                 }
                  
+                 if((bekertsor1 >= bekertoszlop1)){
+                     maxindex = bekertsor1;
+                 }
+                 if((bekertoszlop1 >= bekertsor1)){
+                     maxindex = bekertoszlop1;
+                 }
                  //Ha a bekért szám nagyobb az indexnél, akkor növelni fogja a vektor méretét
+                 
                  if(maxindex >= index){
+                     
                      int jelenlegis = (int)tabla[0].size();
                      int jelenlegio = (int)tabla.size();
-                     
                      
                      tabla.resize(jelenlegio+((maxindex+1)-index));
                      for (int i = 0; i < jelenlegio+((maxindex+1)-index); ++i)
                          tabla[i].resize(jelenlegis+((maxindex+1)-index));
                      
+                     if(bekertsor1n >= 0){
                      if(tabla.size() != tabla[0].size()){
                          tabla.resize(tabla[0].size());
                          for (int i = 0; i < tabla.size(); i++){
                              tabla[i].resize(tabla.size());
                          }
                      }
+                     }
                      
                      index = jelenlegio+((maxindex+1)-index);
                  }
-                 
-                 //cout << "ABSsor: " << bekertsor1 << "\n";
-                 //cout << "ABSoszlop: " << bekertoszlop1 << "\n";
                  
                 
                  //Ha a bekértoszlop negatív, akkor igazából a bekértoszlop 0 lesz
@@ -221,6 +243,7 @@ int main() {
                     if(tabla[x][y] == 1){
                         pontszam +=1;
                         if(pontszam >= 5){
+                            cout << pontszam;
                             cout << "Nyert az 1. játékos! Szép munka :) \n";
                             playersorszam = 0;
                             jatekvege = 1;
@@ -257,7 +280,6 @@ int main() {
                         }
                         pos1 = i;
                         pos1ures = false;
-                        
                         
                         for(int j=0; j<=tabla[0].size()-1; j++){
                             if((j+pos1) < tabla[0].size()-1 && (j+pos1) < tabla.size()-1){
@@ -304,7 +326,7 @@ int main() {
                 }
             }
             
-            
+            //tabla[4444][1] = 1;
             //Játékosváltás, ha nincs még vége a játéknak
             if(jatekvege == 1){
                 playersorszam = 0;
@@ -335,12 +357,23 @@ int main() {
                  bekertsor2-=1;
                  bekertoszlop2-=1;
                  
-                 //Mínusz abszolútértékre váltás
-                 if(bekertsor2 < 0){
-                     //Elmentjük a negatív értéket egy változóba, később jó lesz:)
-                     bekertsor2n = bekertsor2+1;
+                 if(bekertsor2<0){
+                     bekertsor2n = (bekertsor2)+1;
                      bekertsor2 = abs(bekertsor2)-1;
-                     
+                 }
+                 if(bekertoszlop2<0){
+                     bekertoszlop2n = (bekertoszlop2)+1;
+                     bekertoszlop2 = abs(bekertoszlop2)-1;
+                 }
+                 
+                 
+                 
+                 //Mínusz abszolútértékre váltás
+                 if(bekertsor2n < 0){
+                     int jelenlegis = (int)tabla[0].size();
+                     if(bekertoszlop2n < 0){
+                         bekertsor2n -= 1;
+                     }
                      //Ha csak -1 a bekért érték, akkor elég csak egyszer insertelni.
                      //Hozzáadunk annyi nullát a függőleges sorba, amennyi minusz értéket kapott.
                      //Ezután a hozzáadott sor(ok)hoz feltöltjük a vízszintes sort is nullásokkal, annyival, amekkora a tábla[sor] értéke alapból
@@ -352,25 +385,21 @@ int main() {
                      }
                      
                      if(bekertsor2 > 1){
-                         bekertsor2 -=1;
                          for(int i=0; i<bekertsor2; i++){
                              tabla.emplace(tabla.begin(), 0);
                          }
                          for(int a=0; a<bekertsor2; a++){
-                             for(int j = 0; j<tabla[j+bekertsor2].size(); j++){
+                             for(int j = 0; j<jelenlegis; j++){
                                  tabla[a].push_back(0);
                              }
                          }
                          
                      }
-                     
                      pluszindexsor = (int)tabla[0].size();
                      
                  }
                  
-                 if(bekertoszlop2 < 0){
-                     bekertoszlop2n = (bekertoszlop2)+1;
-                     bekertoszlop2 = abs(bekertoszlop2)-1;
+                 if(bekertoszlop2n < 0){
                      
                      //Minden függőleges sor elé rakunk táblaméretnyi nullást
                      //Így produkálva egy új függőleges sort.
@@ -391,14 +420,13 @@ int main() {
                  
                  
                  int maxindex = 0;
-                 if(bekertsor2n >= 0 && bekertoszlop2n >= 0){
+                 
                      if(bekertsor2 >= bekertoszlop2){
                          maxindex = bekertsor2;
                      }
                      if(bekertoszlop2 >= bekertsor2){
                          maxindex = bekertoszlop2;
                      }
-                 }
                  
                  if(maxindex >= index){
                      int jelenlegis = (int)tabla[0].size();
@@ -409,12 +437,15 @@ int main() {
                      for (int i = 0; i < jelenlegio+((maxindex+1)-index); ++i)
                          tabla[i].resize(jelenlegis+((maxindex+1)-index));
                      
+                     if(bekertsor2n >= 0){
                      if(tabla.size() != tabla[0].size()){
                          tabla.resize(tabla[0].size());
                          for (int i = 0; i < tabla.size(); i++){
                              tabla[i].resize(tabla.size());
                          }
                      }
+                     }
+                     //tabla[3333][1] = 1;
                      
                      index = jelenlegio+((maxindex+1)-index);
                  }
@@ -429,7 +460,8 @@ int main() {
                  
                      if(tabla[bekertsor2][bekertoszlop2] != 0){
                          cout << "Ezen a pozicion szerepel mar egy jel. Valassz masikat! \n";
-                     }
+                         cout << tabla[bekertsor2][bekertoszlop2] << " és " << bekertsor2 <<" " << bekertoszlop2;
+                      }
                      if(tabla[bekertsor2][bekertoszlop2] == 0){
                          //cout << "Bekért: " << bekertsor1 << "," << bekertoszlop1 << "\n";
                          if(bekertsor2n < 0 && bekertoszlop2n >= 0){
